@@ -17,12 +17,12 @@ const Home = () => {
 
     return (
         <Box sx={{ width: '100vw', height: '100vh', display: 'flex', backgroundImage: "url('https://web.telegram.org/a/chat-bg-pattern-light.ee148af944f6580293ae.png')" }}>
-            <Grid container sx={{ flex: 1 }} columns={12} spacing={1}>
-                <Grid item xs={3} sx={{ height: '100%' }}>
-                    <ChatList chats={chats} setSelectedChatId={setSelectedChatId} />
+            <Grid container sx={{ flex: 1 }} columns={12} >
+                <Grid item xl={3} lg={4} md={4} sm={6} xs={12}  sx={{ height: '100%' }}>
+                    <ChatList chats={chats} setSelectedChatId={setSelectedChatId} selectedChatId={selectedChatId}/>
                 </Grid>
-                <Grid item xs={9} sx={{ height: '100%' }}>
-                    {selectedChat ? <ChatWindow chatId={id} chat={selectedChat} /> : <Box sx={{ backgroundImage: "url('https://web.telegram.org/a/chat-bg-pattern-light.ee148af944f6580293ae.png')", height: '100vh' }}>Select a chat to start messaging</Box>}
+                <Grid item xl={9} lg={8} md={8} sm={6} xs={12}  sx={{ height: '100%' }}>
+                    {selectedChat ? <ChatWindow chatId={id} chat={selectedChat} /> : <Box sx={{ backgroundImage: "url('https://web.telegram.org/a/chat-bg-pattern-light.ee148af944f6580293ae.png')", height: '100vh' }}></Box>}
                 </Grid>
             </Grid>
         </Box>
