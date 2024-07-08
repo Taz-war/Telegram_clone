@@ -14,3 +14,20 @@ export const fetchData = async (page) => {
       return null;
     }
   };
+
+export const fetchChatMessages = async (chatId) => {
+  const url = `https://devapi.beyondchats.com/api/get_chat_messages?chat_id=${chatId}`;
+
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    const data = await response.json();
+    console.log(data);
+    return data.data; // Adjust based on how you want to use the fetched data
+  } catch (error) {
+    console.error('Fetch error:', error);
+    return null;
+  }
+};

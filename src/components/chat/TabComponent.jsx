@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Tabs, Tab, Typography, Avatar, List, ListItem, ListItemText } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
 
 // TabPanel component to display content of each tab
 function TabPanel(props) {
@@ -37,96 +38,65 @@ function a11yProps(index) {
     };
 }
 
-const TabComponent = () => {
+const TabComponent = ({ tabsData }) => {
     const [value, setValue] = useState(0);
+    const theme = useTheme();
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    const chats = [
-        { id: 1, name: 'Fahim', avatar: '', initials: 'FI' },
-        { id: 2, name: 'Sakib', avatar: '/path/to/avatar2.jpg', initials: '' },
-        { id: 3, name: 'Rakib', avatar: '', initials: 'RI' },
-    ];
-
     return (
-        <Box sx={{ width: '100%', bgcolor: '#2a2a2a', color: 'white' }}>
+        <Box sx={{ width: '100%', bgcolor: theme.palette.background.default, color: theme.palette.text.primary }}>
             <Tabs
+        
                 value={value}
                 onChange={handleChange}
                 aria-label="basic tabs example"
                 TabIndicatorProps={{ style: { backgroundColor: '#766AC8' } }}
                 sx={{
                     '& .MuiTab-root': {
-                        color: 'white',
+                        color: theme.palette.text.primary,
                     },
                     '& .Mui-selected': {
                         color: '#766AC8 !important',
                     },
-                    fontFamily:'sans-serif'
+                    fontFamily: 'sans-serif'
                 }}
             >
-                <Tab label="Chats" {...a11yProps(0)} sx={{ color: 'white','&:hover': {
-                        bgcolor: '#494848',
-                        opacity: 1,
-                        borderRadius:'15px 15px 0px 0px'
-                      } }} />
-                <Tab label="Media" {...a11yProps(1)} sx={{ color: 'white','&:hover': {
-                        bgcolor: '#494848',
-                        opacity: 1,
-                        borderRadius:'15px 15px 0px 0px'
-                      } }} />
-                <Tab label="Links" {...a11yProps(2)} sx={{ color: 'white','&:hover': {
-                        bgcolor: '#494848',
-                        opacity: 1,
-                        borderRadius:'15px 15px 0px 0px'
-                      } }} />
-                <Tab label="Files" {...a11yProps(3)} sx={{ color: 'white','&:hover': {
-                        bgcolor: '#494848',
-                        opacity: 1,
-                        borderRadius:'15px 15px 0px 0px'
-                      } }} />
-                <Tab label="Music" {...a11yProps(4)} sx={{ color: 'white','&:hover': {
-                        bgcolor: '#494848',
-                        opacity: 1,
-                        borderRadius:'15px 15px 0px 0px'
-                      } }} />
-                <Tab label="Voice" {...a11yProps(5)} sx={{ color: 'white','&:hover': {
-                        bgcolor: '#494848',
-                        opacity: 1,
-                        borderRadius:'15px 15px 0px 0px'
-                      } }} />
+                {tabsData.map((tab, index) => (
+                    <Tab
+                    
+                        key={index}
+                        label={tab.label}
+                        {...a11yProps(index)}
+                        sx={{
+                            color: theme.palette.text.primary,
+                            '&:hover': {
+                                bgcolor: '#494848',
+                                opacity: 1,
+                                borderRadius: '15px 15px 0px 0px'
+                            }
+                        }}
+                    />
+                ))}
             </Tabs>
-            <TabPanel value={value} index={0}>
-                <List sx={{ display: 'flex', justifyContent: 'center', bgcolor: '#1e1e1e', borderRadius: 1, p: 1 }}>
-                    {chats.map((chat) => (
-                        <ListItem key={chat.id} sx={{ flexDirection: 'column', width: 'auto', textAlign: 'center', m: 1 }}>
-                            <Avatar src={chat.avatar} sx={{ width: 56, height: 56, bgcolor: chat.avatar ? 'transparent' : '#ff5722' }}>
-                                {chat.initials}
-                            </Avatar>
-                            <ListItemText primary={chat.name} sx={{ color: 'white' }} />
-                        </ListItem>
-                    ))}
-                </List>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                Media content here
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Links content here
-            </TabPanel>
-            <TabPanel value={value} index={3}>
-                Files content here
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                Music content here
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                Voice content here
-            </TabPanel>
+            {tabsData.map((tab, index) => (
+                <TabPanel key={index} value={value} index={index}>
+                    {tab.content}
+                </TabPanel>
+            ))}
         </Box>
     );
+};
+
+TabComponent.propTypes = {
+    tabsData: PropTypes.arrayOf(
+        PropTypes.shape({
+            label: PropTypes.string.isRequired,
+            content: PropTypes.node.isRequired,
+        })
+    ).isRequired,
 };
 
 export default TabComponent;
